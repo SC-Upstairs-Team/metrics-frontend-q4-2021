@@ -1,33 +1,33 @@
-import React from 'react';
-//import subWeeks from 'date-fns/subWeeks';
-import TextField from '@mui/material/TextField';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { format } from 'date-fns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import Stack from '@mui/material/Stack';
-import DatePicker from '@mui/lab/DatePicker';
-//import Box from '@mui/material/Box';
+// import React from 'react';
+// //import subWeeks from 'date-fns/subWeeks';
+// import TextField from '@mui/material/TextField';
+// import AdapterDateFns from '@mui/lab/AdapterDateFns';
+// import { format } from 'date-fns';
+// import LocalizationProvider from '@mui/lab/LocalizationProvider';
+// import Stack from '@mui/material/Stack';
+// import DatePicker from '@mui/lab/DatePicker';
+// //import Box from '@mui/material/Box';
 
-export function ViewDate() {
+// export function ViewDate() {
 
-  const [date, setDate] = React.useState(new Date());
+//   const [date, setDate] = React.useState(new Date());
 
+//   console.log(date)
   
-  return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Stack sx={{ width: 150 }} spacing={3}>
-        <DatePicker
-        label="Today"
-        value={format(date, "dd-MM-yyyy")}
-        readOnly
-        onChange={(newDate) => {
-          setDate(newDate);
-        }}
-        renderInput={(params) => <TextField {...params} helperText={null}/>}/>
-      </Stack>
-   </LocalizationProvider>  
-  )
-}
+//   return (
+//     <LocalizationProvider dateAdapter={AdapterDateFns}>
+//       <Stack sx={{ width: 150 }} spacing={3}>
+//         <DatePicker
+//         value={format(date, "dd-MM-yyyy")}
+//         readOnly
+//         onChange={(newDate) => {
+//           setDate(newDate);
+//         }}
+//         renderInput={(params) => <TextField {...params} helperText={null}/>}/>
+//       </Stack>
+//    </LocalizationProvider>  
+//   )
+// }
   
 // A TO & FROM SELECTOR START
 

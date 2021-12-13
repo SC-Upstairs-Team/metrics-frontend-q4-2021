@@ -2,7 +2,6 @@ import { useState, useEffect } from "react"
 import axios from "axios";
 import { useAuth } from "../hooks/auth";
 
-import { ViewDate } from "../components/Calendar";
 import { SimpleSelect } from "../components/SimpleSelect";
 import { SelectServices } from "../components/SelectServices";
 
@@ -70,6 +69,7 @@ export const Home = () => {
     const [pingData, setPingData] = useState(null);
     const [selectedTime, setSelectedTime] = useState(defValue);
     const [steps, setSteps] = useState(null);
+    const [selectedCheckValue, setSelectedCheckValue] = useState();
 
     useEffect(() => {
         authenticatedRequest(async (token) => {
@@ -78,6 +78,9 @@ export const Home = () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
+
+
+            await axios.get('/metrics/getdata').then(res => {
 
             // await axios.get('/services').then(res => {
             //     const newData = JSON.stringify(res.data);
@@ -101,7 +104,7 @@ export const Home = () => {
         for(const item of menuItems) {
             if(item.value === selectedTime) {
                 setSteps(item.step)
-            }
+            } j
         }
     }, [selectedTime])
 
@@ -110,20 +113,18 @@ export const Home = () => {
     }
         
     return (<>Welcome to the app {account.account_name} and these are our services: {newData} 
-                    <Graph/>
+                    <Graph services={selectedCheckValue}/>
                     <br></br>
                     <TimeSlider steps={steps} time={selectedTime}/>
                     <br></br>
                     <SimpleSelect onValueChange={(value) => setSelectedTime(value)} menuItems={menuItems} title="Time"/>
-                <ViewDate/>
                 <br></br>
-                <SelectServices serviceMenuItems={serviceMenuItems} filterMenuItems={filterMenuItems}/>
+
+                <SelectServices onServicesChange={setSelectedCheckValue} serviceMenuItems={serviceMenuItems} filterMenuItems={filterMenuItems}/>
                 <br/><br/>
                 <Graph/>
                 <br></br>
                 <br></br>
-                
-                
-
+               
     </>);
 }

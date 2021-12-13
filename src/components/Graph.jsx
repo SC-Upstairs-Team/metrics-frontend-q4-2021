@@ -15,7 +15,7 @@ const ChartTypes = Object.freeze({
 
 import {Typography, Button} from "@mui/material";
 
-function Graph(){
+function Graph(props){
 
     const [metricsData, setMetricsData] = useState(null);
 
@@ -78,9 +78,14 @@ function Graph(){
 
 
 
+
+  const dataArray = []
+  const updatedDataArray = []
+
  
 
     const [minLatency, setMinLatency] = useState();
+
 
     // const header = "users";
 
@@ -106,6 +111,8 @@ slidersfor (i = 4; i >= 4 && i < 10; i++ ) {
 
   const [metrics, setMetrics] = useState(dataArray);
   const [graphTitle, setGraphTitle] = useState(title);
+
+  console.log(props.services)
 
 
 return (
