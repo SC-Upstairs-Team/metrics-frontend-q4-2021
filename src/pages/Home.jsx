@@ -40,24 +40,6 @@ export const serviceMenuItems = [
 
 export const defValue = menuItems[3].value
 
-export const menuItems = [{label:"10 Minutes", value:"tenMinutes"}, {label:"1 Hour", value:"oneHour"},
-{label:"6 Hours", value:"sixHours"}, {label:"12 Hours", value:"twelvehours"}, {label:"24 Hours", value:"oneDay"}]
-
-export const filterMenuItems = [
-   {primary: "Status", key: "status"},
-   {primary: "Average Latency", key: "avglat"},
-   {primary: "Maximum Latency", key: "maxlat"},
-   {primary: "Minimum Latency", key: "minlat"},
-]
-
-export const serviceMenuItems = [ 
-{primary: "Authorization", icon: <LockIcon/>, key: "auth"},
-{primary: "User", icon: <PersonIcon/>, key: "user"},
-{primary: "Carts", icon: <ShoppingCartIcon/>, key: "cart"},
-{primary: "Products", icon: <Inventory2Icon/>, key: "products"},
-{primary: "Suggestions", icon:<AssistantPhotoIcon/>, key: "suggestions"},
-{primary: "Billing", icon: <CreditCardIcon/>, key: "billing"},
-]
 
 
 export const Home = () => {
@@ -81,14 +63,6 @@ export const Home = () => {
 
 
             await axios.get('/metrics/getdata').then(res => {
-
-            // await axios.get('/services').then(res => {
-            //     const newData = JSON.stringify(res.data);
-            //     setNewData(newData)
-            //     return newData;
-            // });
-
-            await axios.get('/metrics/getdata').then(res => {
                 console.log(res)
                 const pingData = res.data;
                 setPingData(pingData)
@@ -104,7 +78,7 @@ export const Home = () => {
         for(const item of menuItems) {
             if(item.value === selectedTime) {
                 setSteps(item.step)
-            } j
+            } 
         }
     }, [selectedTime])
 
@@ -122,7 +96,6 @@ export const Home = () => {
 
                 <SelectServices onServicesChange={setSelectedCheckValue} serviceMenuItems={serviceMenuItems} filterMenuItems={filterMenuItems}/>
                 <br/><br/>
-                <Graph/>
                 <br></br>
                 <br></br>
                

@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import {
-    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip} from 'recharts';
+    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Title, BarChart, Bar, Legend} from 'recharts';
 
 import {Typography, Button} from "@mui/material";
 
@@ -13,7 +13,6 @@ const ChartTypes = Object.freeze({
 });
 
 
-import {Typography, Button} from "@mui/material";
 
 function Graph(props){
 
@@ -23,7 +22,6 @@ function Graph(props){
 
     useEffect(() => {
         axios.get('/metrics/getdata').then(res => {
-            // console.log(res)
             const metricsData = res.data;
             setMetricsData(metricsData)
            
@@ -35,7 +33,12 @@ function Graph(props){
   const updatedDataArray = [];
   const [moreData, setMoreData] = useState(metricsData);
   const [otherData, setOtherData] = useState(metricsData);
+  const [selectedInformation, setSelectedInformation] = useState(props.services);
+  const [minLatency, setMinLatency] = useState();
+  const [maxLatency, setMaxLatency] = useState();
 
+  
+    // all use effects needed for the data as it is undefined on load
     useEffect(() => {
         if (metricsData && metricsData.length > 0){
             for (let i = 0 ; i < 40; i++) {
@@ -68,51 +71,64 @@ function Graph(props){
                      MinLatency: metricsData[i].avg_min,
                     ServiceType: metricsData[i].service_type}
             } setOtherData(updatedDataArray)
-            console.log(otherData)
+          
             
 
 
         }
     },[metricsData])
-                    
+
+
+    
+    useEffect(() => {
+        if (props.services && props.services.length > 0) {
+             console.log(props.services[0])
+
+                  
+            setSelectedInformation(props.services)
+            
+
+            if (props.services[0].includes("avglat") ){
+                console.log("AVERAGE LATENCY!")
+            } 
+            if (props.services[0].includes("maxlat")){
+                console.log("MAXIMUM LATENCY!")
+                setMaxLatency("MaxLatency")
+            }
+            if (props.services[0].includes("minlat")){
+                console.log("MIN LATENCY")
+                setMinLatency("MinLatency")
+            }
+            if (props.services[0].indexOf("minlat") === -1){
+                setMinLatency("off")
+            }
+            if (props.services[0].indexOf("maxlat") === -1){
+                setMaxLatency("off")
+            }
 
 
 
+            else if (props.services[0].includes("http_status")){
+                console.log("status")
+            }
+            
+        }
+  
 
-  const dataArray = []
-  const updatedDataArray = []
+    }, [props.services]) 
 
- 
 
-    const [minLatency, setMinLatency] = useState();
+
 
 
     // const header = "users";
 
-    const title = 'Users - Latency Information';
 
     // const [metrics, setMetrics] = useState(dataArray);
-    const [graphTitle, setGraphTitle] = useState(title);
+    const [graphTitle, setGraphTitle] = useState();
   //set initial dataset values
-  
 
 
-// update the dataset values to use a different time frame
-slidersfor (i = 4; i >= 4 && i < 10; i++ ) {
-    updatedDataArray[(i-4)] = {
-        name: timeStamps[i], Latency: backendData[i].avg_latency}
-    }  
-
-
-
-  const header = backendData[0].service_type.toUpperCase()
-
-  const title = header + ' - Latency Information';
-
-  const [metrics, setMetrics] = useState(dataArray);
-  const [graphTitle, setGraphTitle] = useState(title);
-
-  console.log(props.services)
 
 
 return (
@@ -165,6 +181,13 @@ return (
                     stroke='#E1341E'
                     fill='#8884d8' 
                 />
+                <Line
+                    type='monotone'
+                    strokeWidth={2}
+                    dataKey={maxLatency}
+                    stroke='#E1341E'
+                    fill='#8884d8' 
+                />
             </LineChart>
 
         )}
@@ -190,40 +213,6 @@ return (
 
 
 
-        
-        <LineChart
-
-            width={1200}
-
-            height={400}
-            data={moreData}
-            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis type="number" domain={[100, 300]}/>
-            <Tooltip />
-            <Line
-                type='monotone'
-                dataKey={'Latency'}
-                stroke='#8884d8'
-                fill='#8884d8'
-            />
-            <Line
-                type='monotone'
-                dataKey={minLatency}
-                stroke='#E1341E'
-                fill='#8884d8' 
-            />
-
-
-
-            {/* <Line
-                type='monotone'
-                dataKey={'amt'}
-                stroke='#E1341E'
-                fill='#6764d8' 
-            /> */}
-        </LineChart>
    </div>
 
 
