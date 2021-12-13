@@ -7,7 +7,7 @@ import {
 
 import {Typography, Button} from "@mui/material";
 
-function Graph(){
+function Graph(props){
 
 
     const data = [{"pod_id":"users-ed01a939","service_type":"users","ts":10000,"http_status":{"200":56,"401":2,"403":7,"404":5,"499":1},
@@ -53,7 +53,6 @@ function Graph(){
     //     const {ts, service_type} = time;
     // })
 
-
   const dataArray = []
   const updatedDataArray = []
 
@@ -80,6 +79,8 @@ for (i = 4; i >= 4 && i < 10; i++ ) {
 
   const [metrics, setMetrics] = useState(dataArray);
   const [graphTitle, setGraphTitle] = useState(title);
+
+  console.log(props.services)
 
 
 return (

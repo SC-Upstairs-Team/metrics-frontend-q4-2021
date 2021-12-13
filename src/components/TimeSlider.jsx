@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import { Slider } from "@mui/material";
+import axios from "axios";
 import Box from '@mui/material/Box';
-import { menuItems, maxValues } from '../pages/Home';
 
 
 export function TimeSlider(props) {
@@ -10,9 +10,15 @@ export function TimeSlider(props) {
     const [time, setTime] = React.useState(props.time)
 
     const handleOnChange = () => {
-      console.log(value)
-    }
-
+      axios
+        .put('/metrics/querydb', value)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })}
+    
     useEffect(() => {
       setMaxValue(props.steps)
       setValue(props.steps)
@@ -32,6 +38,5 @@ export function TimeSlider(props) {
         onChangeCommitted={handleOnChange}
       />
     </Box>
-
     )
 }
