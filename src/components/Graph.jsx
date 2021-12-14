@@ -51,7 +51,7 @@ function Graph(props) {
     // all use effects needed for the data as it is undefined on load
     useEffect(() => {
         if (metricsData && metricsData.length > 0) {
-            for (let i = 0; i < 40; i++) {
+            for (let i = 0; i < 61; i++) {
 
                 dataArray[i] = {
                     name: new Date(metricsData[i].ts_point).toLocaleString("en-GB",
@@ -133,7 +133,6 @@ function Graph(props) {
                 console.log("status")
 
 
-                setHttpStatus200("HttpStatus200")
                 setHttpStatus400("HttpStatus400")
                 setHttpStatus401("HttpStatus401")
                 setHttpStatus403("HttpStatus403")
@@ -141,7 +140,6 @@ function Graph(props) {
                 setHttpStatus499("HttpStatus499")
                 setHttpStatus500("HttpStatus500")
                 setHttpStatus502("HttpStatus502")
-                console.log("mMORE DATA STAUS IS::::: " + moreData[1].HttpStatus499)
                 if (moreData[1].HttpStatus200 = 0) {
                     setHttpStatus400("off")
                 }
@@ -214,7 +212,7 @@ function Graph(props) {
                     margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey={dataKey} />
-                    <YAxis type="number" domain={[0, dataMax => (dataMax * 1.5)]} />
+                    <YAxis type="number" domain={[0, dataMax => (dataMax * 2)]} />
                     <Tooltip />
                     <Line
                         type='monotone'
@@ -227,21 +225,14 @@ function Graph(props) {
                         type='monotone'
                         strokeWidth={2}
                         dataKey={minLatency}
-                        stroke='#E1341E'
-                        fill='#8884d8'
-                    />
-                    <Line
-                        type='monotone'
-                        strokeWidth={2}
-                        dataKey={percentile99th}
                         stroke='#1ce32f'
                         fill='#8884d8'
                     />
                     <Line
                         type='monotone'
                         strokeWidth={2}
-                        dataKey={httpStatus200}
-                        stroke='#010101'
+                        dataKey={percentile99th}
+                        stroke='#E1341E'
                         fill='#8884d8'
                     />
 
@@ -249,28 +240,28 @@ function Graph(props) {
                         type='monotone'
                         strokeWidth={2}
                         dataKey={httpStatus400}
-                        stroke='#010101'
+                        stroke='#E1341E'
                         fill='#8884d8'
                     />
                     <Line
                         type='monotone'
                         strokeWidth={2}
                         dataKey={httpStatus401}
-                        stroke='#010101'
+                        stroke='#8884d8'
                         fill='#8884d8'
                     />
                     <Line
                         type='monotone'
                         strokeWidth={2}
                         dataKey={httpStatus403}
-                        stroke='#010101'
+                        stroke='#FF8C00'
                         fill='#8884d8'
                     />
                     <Line
                         type='monotone'
                         strokeWidth={2}
                         dataKey={httpStatus404}
-                        stroke='#010101'
+                        stroke='#00f5ff'
                         fill='#8884d8'
                     />
                     <Line
@@ -284,15 +275,15 @@ function Graph(props) {
                         type='monotone'
                         strokeWidth={2}
                         dataKey={httpStatus500}
-                        stroke='#010101'
-                        fill='#8884d8'
+                        stroke='#C600FF'
+                        fill='#C600FF'
                     />
 
                     <Line
                         type='monotone'
                         strokeWidth={2}
                         dataKey={httpStatus502}
-                        stroke='#010101'
+                        stroke='#B65549'
                         fill='#8884d8'
                     />
 
