@@ -1,17 +1,10 @@
 import { useState, useEffect } from "react"
 import axios from "axios";
 import { useAuth } from "../hooks/auth";
-
 import { SimpleSelect } from "../components/SimpleSelect";
 import { SelectServices } from "../components/SelectServices";
-
 import Graph from '../components/Graph';
-
-import { Checkbox } from "@mui/material";
-
 import { TimeSlider } from "../components/TimeSlider";
-
-
 import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -40,29 +33,8 @@ export const serviceMenuItems = [
 
 export const defValue = menuItems[3].value
 
-export const menuItems = [{label:"10 Minutes", value:"tenMinutes"}, {label:"1 Hour", value:"oneHour"},
-{label:"6 Hours", value:"sixHours"}, {label:"12 Hours", value:"twelvehours"}, {label:"24 Hours", value:"oneDay"}]
-
-export const filterMenuItems = [
-   {primary: "Status", key: "status"},
-   {primary: "Average Latency", key: "avglat"},
-   {primary: "Maximum Latency", key: "maxlat"},
-   {primary: "Minimum Latency", key: "minlat"},
-]
-
-export const serviceMenuItems = [ 
-{primary: "Authorization", icon: <LockIcon/>, key: "auth"},
-{primary: "User", icon: <PersonIcon/>, key: "user"},
-{primary: "Carts", icon: <ShoppingCartIcon/>, key: "cart"},
-{primary: "Products", icon: <Inventory2Icon/>, key: "products"},
-{primary: "Suggestions", icon:<AssistantPhotoIcon/>, key: "suggestions"},
-{primary: "Billing", icon: <CreditCardIcon/>, key: "billing"},
-]
-
-
 export const Home = () => {
     const { authenticatedRequest } = useAuth();
-
     const [isLoading, setIsLoading] = useState(true);
     const [account, setAccount] = useState(null);
     const [newData, setNewData] = useState(null);
@@ -78,15 +50,6 @@ export const Home = () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-
-
-            await axios.get('/metrics/getdata').then(res => {
-
-            // await axios.get('/services').then(res => {
-            //     const newData = JSON.stringify(res.data);
-            //     setNewData(newData)
-            //     return newData;
-            // });
 
             await axios.get('/metrics/getdata').then(res => {
                 console.log(res)
@@ -119,12 +82,7 @@ export const Home = () => {
                     <br></br>
                     <SimpleSelect onValueChange={(value) => setSelectedTime(value)} menuItems={menuItems} title="Time"/>
                 <br></br>
-
                 <SelectServices onServicesChange={setSelectedCheckValue} serviceMenuItems={serviceMenuItems} filterMenuItems={filterMenuItems}/>
-                <br/><br/>
-                <Graph/>
-                <br></br>
-                <br></br>
-               
+                <br/><br/>             
     </>);
 }
