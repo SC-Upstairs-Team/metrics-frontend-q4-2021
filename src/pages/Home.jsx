@@ -51,7 +51,8 @@ export const Home = () => {
                 }
             });
 
-            await axios.get('/metrics/getdata').then(res => {
+
+            await axios.get('/metrics/querydb').then(res => {
                 console.log(res)
                 const pingData = res.data;
                 setPingData(pingData)
@@ -83,6 +84,5 @@ export const Home = () => {
                     <SimpleSelect onValueChange={(value) => setSelectedTime(value)} menuItems={menuItems} title="Time"/>
                 <br></br>
                 <SelectServices onServicesChange={setSelectedCheckValue} serviceMenuItems={serviceMenuItems} filterMenuItems={filterMenuItems}/>
-                <br/><br/>             
     </>);
 }
