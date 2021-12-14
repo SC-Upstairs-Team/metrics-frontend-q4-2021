@@ -43,6 +43,7 @@ function Graph(props) {
     const [httpStatus499, setHttpStatus499] = useState();
     const [httpStatus500, setHttpStatus500] = useState();
     const [httpStatus502, setHttpStatus502] = useState();
+    const [graphTitle, setGraphTitle] = useState();
 
     // all use effects needed for the data as it is undefined on load
     useEffect(() => {
@@ -70,29 +71,6 @@ function Graph(props) {
 
         }
     }, [metricsData])
-
-
-
-    // useEffect(() => {
-    //     if (metricsData && metricsData.length > 0){
-    //         for (let i = 0; i < 10; i ++){
-
-    //             updatedDataArray[i] = {
-    //                 name: new Date(metricsData[i].ts ).toLocaleString("en-GB", 
-    //                 {hour: "numeric", minute: "numeric", second: "numeric"}), 
-    //                 Latency: metricsData[i].avg_lat,
-    //                  MaxLatency: metricsData[i].avg_max, 
-    //                  MinLatency: metricsData[i].avg_min,
-    //                 ServiceType: metricsData[i].service_type}
-    //         } setOtherData(updatedDataArray)
-
-
-
-
-    //     }
-    // },[metricsData])
-
-
 
     useEffect(() => {
         if (props.services && props.services.length > 0) {
@@ -151,21 +129,7 @@ function Graph(props) {
             }
 
         }
-
-
     }, [props.services])
-
-
-
-
-
-    // const header = "users";
-
-
-    // const [metrics, setMetrics] = useState(dataArray);
-    const [graphTitle, setGraphTitle] = useState();
-    //set initial dataset values
-
 
     return (
 
@@ -293,23 +257,8 @@ function Graph(props) {
                 </BarChart>
 
             )}
-
-            {/* {displayedChartType === ChartTypes.Unknown && (
-            <div>
-                <button onClick={() => setDisplayedChartType(ChartTypes.Bar)}>Bar</button>
-                <button onClick={() => setDisplayedChartType(ChartTypes.Line)}>Line</button>
-            </div>
-        )} */}
-
-
-
         </div>
-
-
     )
-
 }
-
-
 
 export default Graph
