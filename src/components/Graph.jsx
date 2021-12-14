@@ -14,19 +14,15 @@ const ChartTypes = Object.freeze({
 });
 
 
-
 function Graph(props) {
 
     const [metricsData, setMetricsData] = useState(null);
-
     const [displayedChartType, setDisplayedChartType] = useState(ChartTypes.Unknown);
-
+  
     useEffect(() => {
         axios.get('/metrics/querydb').then(res => {
             const metricsData = res.data;
             setMetricsData(metricsData)
-
-
         });
     }, []);
 
@@ -52,7 +48,6 @@ function Graph(props) {
     useEffect(() => {
         if (metricsData && metricsData.length > 0) {
             for (let i = 0; i < 61; i++) {
-
                 dataArray[i] = {
                     name: new Date(metricsData[i].ts_point).toLocaleString("en-GB",
                         { hour: "numeric", minute: "numeric", second: "numeric" }),
@@ -172,10 +167,7 @@ function Graph(props) {
     //set initial dataset values
 
 
-
-
     return (
-
 
         <div>
             <Button variant="contained"
@@ -201,18 +193,18 @@ function Graph(props) {
                 {graphTitle}
             </Typography>
 
-
-
             {[ChartTypes.Line, ChartTypes.Unknown].indexOf(displayedChartType) != -1 && (
-
+              
                 <LineChart
                     width={1200}
                     height={400}
                     data={moreData}
                     margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" />
+                      
                     <XAxis dataKey={dataKey} />
                     <YAxis type="number" domain={[0, dataMax => (dataMax * 2)]} />
+                      
                     <Tooltip />
                     <Line
                         type='monotone'
@@ -287,9 +279,8 @@ function Graph(props) {
                         fill='#8884d8'
                     />
 
-                </LineChart>
-
-            )}
+                </LineChart>           
+           )}
             {displayedChartType === ChartTypes.Bar && (
 
                 <BarChart width={730} height={250} data={moreData}>
@@ -322,4 +313,3 @@ function Graph(props) {
 
 
 export default Graph
-

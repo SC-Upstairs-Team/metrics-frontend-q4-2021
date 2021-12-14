@@ -1,17 +1,10 @@
 import { useState, useEffect } from "react"
 import axios from "axios";
 import { useAuth } from "../hooks/auth";
-
 import { SimpleSelect } from "../components/SimpleSelect";
 import { SelectServices } from "../components/SelectServices";
-
 import Graph from '../components/Graph';
-
-import { Checkbox } from "@mui/material";
-
 import { TimeSlider } from "../components/TimeSlider";
-
-
 import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -25,8 +18,8 @@ export const menuItems = [ {label:"1 Hour", value:"oneHour", step:23}, {label:"6
 export const filterMenuItems = [
    {primary: "HTTP Status", key: "http_status"},
    {primary: "Average Latency", key: "avglat"},
-   {primary: "Maximum Latency", key: "maxlat"},
    {primary: "Minimum Latency", key: "minlat"},
+   {primary: "99th Percentile", key: "percent"},
 ]
 
 export const serviceMenuItems = [ 
@@ -40,11 +33,8 @@ export const serviceMenuItems = [
 
 export const defValue = menuItems[3].value
 
-
-
 export const Home = () => {
     const { authenticatedRequest } = useAuth();
-
     const [isLoading, setIsLoading] = useState(true);
     const [account, setAccount] = useState(null);
     const [newData, setNewData] = useState(null);
@@ -93,11 +83,6 @@ export const Home = () => {
                     <br></br>
                     <SimpleSelect onValueChange={(value) => setSelectedTime(value)} menuItems={menuItems} title="Time"/>
                 <br></br>
-
                 <SelectServices onServicesChange={setSelectedCheckValue} serviceMenuItems={serviceMenuItems} filterMenuItems={filterMenuItems}/>
-                <br/><br/>
-                <br></br>
-                <br></br>
-               
     </>);
 }
