@@ -25,8 +25,8 @@ export const menuItems = [ {label:"1 Hour", value:"oneHour", step:23}, {label:"6
 export const filterMenuItems = [
    {primary: "HTTP Status", key: "http_status"},
    {primary: "Average Latency", key: "avglat"},
-   {primary: "Maximum Latency", key: "maxlat"},
    {primary: "Minimum Latency", key: "minlat"},
+   {primary: "99th Percentile", key: "percent"},
 ]
 
 export const serviceMenuItems = [ 
@@ -104,7 +104,7 @@ export const Home = () => {
         for(const item of menuItems) {
             if(item.value === selectedTime) {
                 setSteps(item.step)
-            } j
+            } 
         }
     }, [selectedTime])
 
