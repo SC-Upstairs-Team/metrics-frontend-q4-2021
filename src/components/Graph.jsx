@@ -1,9 +1,10 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
-    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Title, BarChart, Bar, Legend} from 'recharts';
+    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Title, BarChart, Bar, Legend
+} from 'recharts';
 
-import {Typography, Button} from "@mui/material";
+import { Typography, Button } from "@mui/material";
 
 
 const ChartTypes = Object.freeze({
@@ -14,108 +15,152 @@ const ChartTypes = Object.freeze({
 
 
 
-function Graph(props){
+function Graph(props) {
 
     const [metricsData, setMetricsData] = useState(null);
 
     const [displayedChartType, setDisplayedChartType] = useState(ChartTypes.Unknown);
 
     useEffect(() => {
-        axios.get('/metrics/getdata').then(res => {
+        axios.get('/metrics/querydb').then(res => {
             const metricsData = res.data;
             setMetricsData(metricsData)
-           
+
 
         });
     }, []);
 
-  const dataArray = [];
-  const updatedDataArray = [];
-  const [moreData, setMoreData] = useState(metricsData);
-  const [otherData, setOtherData] = useState(metricsData);
-  const [selectedInformation, setSelectedInformation] = useState(props.services);
-  const [minLatency, setMinLatency] = useState();
-  const [maxLatency, setMaxLatency] = useState();
+    const dataArray = [];
+    const updatedDataArray = [];
+    const [moreData, setMoreData] = useState(metricsData);
+    const [otherData, setOtherData] = useState(metricsData);
+    const [selectedInformation, setSelectedInformation] = useState(props.services);
+    const [minLatency, setMinLatency] = useState();
+    const [percentile99th, setPercentile99th] = useState();
+    const [dataKey, setDataKey] = useState("name");
+    const [latency, setLatency] = useState();
+    const [httpStatus200, setHttpStatus200] = useState();
+    const [httpStatus400, setHttpStatus400] = useState();
+    const [httpStatus401, setHttpStatus401] = useState();
+    const [httpStatus403, setHttpStatus403] = useState();
+    const [httpStatus404, setHttpStatus404] = useState();
+    const [httpStatus499, setHttpStatus499] = useState();
+    const [httpStatus500, setHttpStatus500] = useState();
+    const [httpStatus502, setHttpStatus502] = useState();
 
-  
     // all use effects needed for the data as it is undefined on load
     useEffect(() => {
-        if (metricsData && metricsData.length > 0){
-            for (let i = 0 ; i < 40; i++) {
-                
+        if (metricsData && metricsData.length > 0) {
+            for (let i = 0; i < 40; i++) {
+
                 dataArray[i] = {
-                    name: new Date(metricsData[i].ts ).toLocaleString("en-GB", 
-                    {hour: "numeric", minute: "numeric", second: "numeric"}), 
+                    name: new Date(metricsData[i].ts_point).toLocaleString("en-GB",
+                        { hour: "numeric", minute: "numeric", second: "numeric" }),
                     Latency: metricsData[i].avg_lat,
-                    MaxLatency: metricsData[i].avg_max, 
-                    MinLatency: metricsData[i].avg_min,
-                    ServiceType: metricsData[i].service_type}
-                
+                    Percentile99th: metricsData[i].avg_per99,
+                    MinLatency: metricsData[i].min_lat,
+                    HttpStatus200: undefined,
+                    HttpStatus400: metricsData.filter(e => metricsData[i].status_400 !== '0').length > 0 ? metricsData[i].status_400 : undefined,
+                    HttpStatus401: metricsData.filter(e => metricsData[i].status_401 !== '0').length > 0 ? metricsData[i].status_401  : undefined,
+                    HttpStatus403: metricsData.filter(e => metricsData[i].status_403 !== '0').length > 0 ? metricsData[i].status_403 : undefined,
+                    HttpStatus404: metricsData.filter(e => metricsData[i].status_404 !== '0').length > 0 ? metricsData[i].status_404 : undefined,
+                    HttpStatus499: metricsData.filter(e => metricsData[i].status_499 !== '0').length > 0 ? metricsData[i].status_499 : undefined,
+                    HttpStatus500: metricsData.filter(e => metricsData[i].status_500 !== '0').length > 0 ? metricsData[i].status_500 : undefined,
+                    HttpStatus502: metricsData.filter(e => metricsData[i].status_502 !== '0').length > 0 ? metricsData[i].status_502 : undefined,
+                    ServiceType: metricsData[i].service_type
                 }
-                setMoreData(dataArray)
+
+            }
+            setMoreData(dataArray)
 
         }
-    },[metricsData])
+    }, [metricsData])
 
 
 
-    useEffect(() => {
-        if (metricsData && metricsData.length > 0){
-            for (let i = 0; i < 10; i ++){
+    // useEffect(() => {
+    //     if (metricsData && metricsData.length > 0){
+    //         for (let i = 0; i < 10; i ++){
 
-                updatedDataArray[i] = {
-                    name: new Date(metricsData[i].ts ).toLocaleString("en-GB", 
-                    {hour: "numeric", minute: "numeric", second: "numeric"}), 
-                    Latency: metricsData[i].avg_lat,
-                     MaxLatency: metricsData[i].avg_max, 
-                     MinLatency: metricsData[i].avg_min,
-                    ServiceType: metricsData[i].service_type}
-            } setOtherData(updatedDataArray)
-          
-            
+    //             updatedDataArray[i] = {
+    //                 name: new Date(metricsData[i].ts ).toLocaleString("en-GB", 
+    //                 {hour: "numeric", minute: "numeric", second: "numeric"}), 
+    //                 Latency: metricsData[i].avg_lat,
+    //                  MaxLatency: metricsData[i].avg_max, 
+    //                  MinLatency: metricsData[i].avg_min,
+    //                 ServiceType: metricsData[i].service_type}
+    //         } setOtherData(updatedDataArray)
 
 
-        }
-    },[metricsData])
 
 
-    
+    //     }
+    // },[metricsData])
+
+
+
     useEffect(() => {
         if (props.services && props.services.length > 0) {
-             console.log(props.services[0])
+            console.log(props.services[0])
 
-                  
+
             setSelectedInformation(props.services)
-            
 
-            if (props.services[0].includes("avglat") ){
+
+            if (props.services[0].includes("avglat")) {
                 console.log("AVERAGE LATENCY!")
-            } 
-            if (props.services[0].includes("maxlat")){
-                console.log("MAXIMUM LATENCY!")
-                setMaxLatency("MaxLatency")
+                setLatency("Latency")
             }
-            if (props.services[0].includes("minlat")){
+            if (props.services[0].includes("max_lat")) {
+                console.log("MAXIMUM LATENCY!")
+                setPercentile99th("Percentile99th")
+            }
+            if (props.services[0].includes("minlat")) {
                 console.log("MIN LATENCY")
                 setMinLatency("MinLatency")
             }
-            if (props.services[0].indexOf("minlat") === -1){
+            if (props.services[0].indexOf("minlat") === -1) {
                 setMinLatency("off")
             }
-            if (props.services[0].indexOf("maxlat") === -1){
-                setMaxLatency("off")
+            if (props.services[0].indexOf("maxlat") === -1) {
+                setPercentile99th("off")
+            }
+            if (props.services[0].indexOf("avglat") === -1) {
+                setLatency("off")
             }
 
-
-
-            else if (props.services[0].includes("http_status")){
+            if (props.services[0].includes("http_status")) {
                 console.log("status")
-            }
-            
-        }
-  
 
-    }, [props.services]) 
+
+                setHttpStatus200("HttpStatus200")
+                setHttpStatus400("HttpStatus400")
+                setHttpStatus401("HttpStatus401")
+                setHttpStatus403("HttpStatus403")
+                setHttpStatus404("HttpStatus404")
+                setHttpStatus499("HttpStatus499")
+                setHttpStatus500("HttpStatus500")
+                setHttpStatus502("HttpStatus502")
+                console.log("mMORE DATA STAUS IS::::: " + moreData[1].HttpStatus499)
+                if (moreData[1].HttpStatus200 = 0) {
+                    setHttpStatus400("off")
+                }
+            }
+            if (props.services[0].indexOf("http_status")) {
+                setHttpStatus200("off")
+                setHttpStatus400("off")
+                setHttpStatus401("off")
+                setHttpStatus403("off")
+                setHttpStatus404("off")
+                setHttpStatus499("off")
+                setHttpStatus500("off")
+                setHttpStatus502("off")
+            }
+
+        }
+
+
+    }, [props.services])
 
 
 
@@ -126,85 +171,148 @@ function Graph(props){
 
     // const [metrics, setMetrics] = useState(dataArray);
     const [graphTitle, setGraphTitle] = useState();
-  //set initial dataset values
+    //set initial dataset values
 
 
 
 
-return (
-
-    
-    <div>
-        <Button variant="contained"
-            onClick={() => {setMoreData(
-            otherData); 
-            {setGraphTitle(metricsData[100].service_type + " - Latency Information")}}} > Change Data
-        </Button>
-        
-        <Button variant="contained"
-            onClick={() => {setMinLatency(
-            "MinLatency"); }} > Show Min Latency
-        </Button>
-
-        <Button id = "bar" variant="contained"
-            onClick={() => {setDisplayedChartType(ChartTypes.Bar) }} > Make a bar graph
-        </Button>
-
-        <Typography ml={6.5} variant="h4" component="h2">
-            {graphTitle}
-        </Typography>
+    return (
 
 
+        <div>
+            <Button variant="contained"
+                onClick={() => {
+                    setMoreData(
+                        otherData);
+                    { setGraphTitle(metricsData[100].service_type + " - Latency Information") }
+                }} > Change Data
+            </Button>
 
-        {[ChartTypes.Line, ChartTypes.Unknown].indexOf(displayedChartType) != -1  && (
+            <Button variant="contained"
+                onClick={() => {
+                    setMinLatency(
+                        "MinLatency");
+                }} > Show Min Latency
+            </Button>
 
-            <LineChart
-                width={1200}
-                height={400}
-                data={moreData}
-                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis type="number" domain={["dataMin - 10", "dataMax + 10"]}/>
-                <Tooltip />
-                <Line   
-                    type='monotone'
-                    strokeWidth={2}
-                    dataKey={'Latency'}
-                    stroke='#8884d8'
-                    fill='#8884d8'
-                />
-                <Line
-                    type='monotone'
-                    strokeWidth={2}
-                    dataKey={minLatency}
-                    stroke='#E1341E'
-                    fill='#8884d8' 
-                />
-                <Line
-                    type='monotone'
-                    strokeWidth={2}
-                    dataKey={maxLatency}
-                    stroke='#E1341E'
-                    fill='#8884d8' 
-                />
-            </LineChart>
+            <Button id="bar" variant="contained"
+                onClick={() => { setDisplayedChartType(ChartTypes.Bar) }} > Make a bar graph
+            </Button>
 
-        )}
-        {displayedChartType === ChartTypes.Bar && (
+            <Typography ml={6.5} variant="h4" component="h2">
+                {graphTitle}
+            </Typography>
 
-            <BarChart width={730} height={250} data={moreData}>
+
+
+            {[ChartTypes.Line, ChartTypes.Unknown].indexOf(displayedChartType) != -1 && (
+
+                <LineChart
+                    width={1200}
+                    height={400}
+                    data={moreData}
+                    margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey={dataKey} />
+                    <YAxis type="number" domain={[0, dataMax => (dataMax * 1.5)]} />
+                    <Tooltip />
+                    <Line
+                        type='monotone'
+                        strokeWidth={2}
+                        dataKey={latency}
+                        stroke='#8884d8'
+                        fill='#8884d8'
+                    />
+                    <Line
+                        type='monotone'
+                        strokeWidth={2}
+                        dataKey={minLatency}
+                        stroke='#E1341E'
+                        fill='#8884d8'
+                    />
+                    <Line
+                        type='monotone'
+                        strokeWidth={2}
+                        dataKey={percentile99th}
+                        stroke='#1ce32f'
+                        fill='#8884d8'
+                    />
+                    <Line
+                        type='monotone'
+                        strokeWidth={2}
+                        dataKey={httpStatus200}
+                        stroke='#010101'
+                        fill='#8884d8'
+                    />
+
+                    <Line
+                        type='monotone'
+                        strokeWidth={2}
+                        dataKey={httpStatus400}
+                        stroke='#010101'
+                        fill='#8884d8'
+                    />
+                    <Line
+                        type='monotone'
+                        strokeWidth={2}
+                        dataKey={httpStatus401}
+                        stroke='#010101'
+                        fill='#8884d8'
+                    />
+                    <Line
+                        type='monotone'
+                        strokeWidth={2}
+                        dataKey={httpStatus403}
+                        stroke='#010101'
+                        fill='#8884d8'
+                    />
+                    <Line
+                        type='monotone'
+                        strokeWidth={2}
+                        dataKey={httpStatus404}
+                        stroke='#010101'
+                        fill='#8884d8'
+                    />
+                    <Line
+                        type='monotone'
+                        strokeWidth={2}
+                        dataKey={httpStatus499}
+                        stroke='#010101'
+                        fill='#8884d8'
+                    />
+                    <Line
+                        type='monotone'
+                        strokeWidth={2}
+                        dataKey={httpStatus500}
+                        stroke='#010101'
+                        fill='#8884d8'
+                    />
+
+                    <Line
+                        type='monotone'
+                        strokeWidth={2}
+                        dataKey={httpStatus502}
+                        stroke='#010101'
+                        fill='#8884d8'
+                    />
+
+                </LineChart>
+
+            )}
+            {displayedChartType === ChartTypes.Bar && (
+
+                <BarChart width={730} height={250} data={moreData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="Latency" fill="#8884d8" />
-                </BarChart> 
+                    <Bar dataKey="HttpStatus" fill="#8884d8" />
+                </BarChart>
 
-        )}
+            )}
 
-        {/* {displayedChartType === ChartTypes.Unknown && (
+            {/* {displayedChartType === ChartTypes.Unknown && (
             <div>
                 <button onClick={() => setDisplayedChartType(ChartTypes.Bar)}>Bar</button>
                 <button onClick={() => setDisplayedChartType(ChartTypes.Line)}>Line</button>
@@ -213,10 +321,10 @@ return (
 
 
 
-   </div>
+        </div>
 
 
-)
+    )
 
 }
 
