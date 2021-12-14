@@ -80,7 +80,8 @@ for (i = 4; i >= 4 && i < 10; i++ ) {
   const [metrics, setMetrics] = useState(dataArray);
   const [graphTitle, setGraphTitle] = useState(title);
 
-  console.log(props.services)
+  
+ 
 
 
 return (

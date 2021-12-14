@@ -22,12 +22,16 @@ export function SelectServices(props) {
   const [open, setOpen] = React.useState({});
   const [checked, setChecked] = React.useState(checkedInitialState);
   const [ticked, setTicked] = React.useState(serviceMenuItems[0].key);
-  const [selectedParentKey, setSelectedParentKey] = React.useState(undefined);
+  const [selectedParentKey, setSelectedParentKey] = React.useState("auth");
+  const [httpStatusChecked, setHttpStatusChecked] = React.useState(false);
+  const [otherChildChecked, setOtherChildChecked] = React.useState(false);
 
   const selectRadio = (key) => {
       if (key !== selectedParentKey) {
         setChecked(checkedInitialState)
         setSelectedParentKey(key) 
+        setOtherChildChecked(false)
+        setHttpStatusChecked(false)
       }
       setTicked(key);
   }
@@ -38,22 +42,31 @@ export function SelectServices(props) {
     setOpen({...open, [key]: open[key]? !open[key] : true});
   };
 
+  const selectCheckbox = (parent, child) => {
+    var key = child+parent
 
-  const selectCheckbox = (key, parentKey) => {
     setChecked({...checked, [key]: !checked[key]});
-    // let disabledOther = false;
-    // for(const checkedItem of Object.entries(checked)){
-    //     if(checkedItem[1]) {
-    //         disabledOther = true;
-    //     }
-    // }
-    // if(!disabledOther) {
-    //     setSelectedParentKey(parentKey)
-    // } else {
-    //     setSelectedParentKey(undefined)
-    // }
   };
-
+  
+  const isDisabled = (parent, child) => {
+    if(child === "http_status") {
+      if(otherChildChecked) {
+        return true;
+      } else if (selectedParentKey !== undefined && selectedParentKey !== parent) {
+       return true;
+      } else {
+        return false;
+      }
+    } else {
+      if(httpStatusChecked) {
+        return true;
+      } else if (selectedParentKey !== undefined && selectedParentKey !== parent) {
+       return true;
+      } else {
+        return false;
+      }
+    }
+  }
 
   useEffect(() => { 
     const keys = Object.keys(checked);
@@ -64,10 +77,30 @@ export function SelectServices(props) {
     for(const filter of filtered) {
       args.push(filter.replace(ticked,""));
     }
+    if(args.includes("http_status")) {
+      setHttpStatusChecked(true)
+    }
+    if(!args.includes("http_status")) {
+      setHttpStatusChecked(false)
+      let disabledOther = false
+      for(const checkedItem of Object.entries(checked)){
+        
+        if(checkedItem[1]) {
+            disabledOther = true
+        }
+      }
+      if(!disabledOther) {
+          setOtherChildChecked(false)
+      } else {
+         setOtherChildChecked(true)      
+      }
+    }    
+    console.log(args)
     props.onServicesChange([args, ticked])
   }, [checked, ticked])
 
 
+  
 
   return (
     <List
@@ -96,8 +129,8 @@ export function SelectServices(props) {
                         <List component="div" disablePadding>
                             <ListItemButton sx={{ pl: 4 }}>
                                 <ListItemText primary={child.primary} />
-                                <Checkbox checked={checked[child.key + item.key]} onChange={() => {selectCheckbox(child.key + item.key, item.key)}} 
-                                {...checkName} disabled={selectedParentKey !== undefined && selectedParentKey !== item.key}/>
+                                <Checkbox checked={checked[child.key + item.key]} onChange={() => {selectCheckbox(item.key, child.key)}} 
+                                {...checkName} disabled={isDisabled(item.key, child.key)}/>
                             </ListItemButton>
                         </List>
                     </Collapse>
@@ -106,5 +139,4 @@ export function SelectServices(props) {
     ))}
     </List>
   );
-
 }
