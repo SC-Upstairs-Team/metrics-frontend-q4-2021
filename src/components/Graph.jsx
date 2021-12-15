@@ -246,6 +246,7 @@ function Graph(props) {
     return (
 
         <div>
+
             <Typography ml={13.5} variant="h4" component="h2">
                 {graphTitle}
             </Typography>
