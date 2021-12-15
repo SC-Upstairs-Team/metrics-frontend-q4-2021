@@ -45,6 +45,11 @@ function Graph(props) {
     const [httpStatus502, setHttpStatus502] = useState();
     const [graphTitle, setGraphTitle] = useState();
 
+    const [time, setTime] = useState(props.time);
+    const [steps, setSteps] = useState(props.steps);
+    const [selectedStep, setSelectedStep] = useState(props.steps)
+
+
     // all use effects needed for the data as it is undefined on load
     useEffect(() => {
         if (metricsData && metricsData.length > 0) {
@@ -67,6 +72,7 @@ function Graph(props) {
                 }
 
             }
+            
             setMoreData(dataArray)
 
         }
@@ -74,22 +80,23 @@ function Graph(props) {
 
     useEffect(() => {
         if (props.services && props.services.length > 0) {
-            console.log(props.services[0])
-
-
+        
             setSelectedInformation(props.services)
+            setTime(props.time)
+            setSelectedStep(props.steps)
+            console.log(props.steps)
+            console.log(props.time)
+            console.log(props.services[1])
+            
 
 
             if (props.services[0].includes("avglat")) {
-                console.log("AVERAGE LATENCY!")
                 setLatency("Latency")
             }
             if (props.services[0].includes("max_lat")) {
-                console.log("MAXIMUM LATENCY!")
                 setPercentile99th("Percentile99th")
             }
             if (props.services[0].includes("minlat")) {
-                console.log("MIN LATENCY")
                 setMinLatency("MinLatency")
             }
             if (props.services[0].indexOf("minlat") === -1) {
@@ -129,7 +136,7 @@ function Graph(props) {
             }
 
         }
-    }, [props.services])
+    }, [props.services, props.time, props.steps])
 
     return (
 
@@ -157,7 +164,7 @@ function Graph(props) {
                 {graphTitle}
             </Typography>
 
-            {[ChartTypes.Line, ChartTypes.Unknown].indexOf(displayedChartType) != -1 && (
+            {[ChartTypes.Line, ChartTypes.Unknown].indexOf(displayedChartType) !== -1 && (
               
                 <LineChart
                     width={1200}
