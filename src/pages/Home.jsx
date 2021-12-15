@@ -11,9 +11,10 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import AssistantPhotoIcon from '@mui/icons-material/AssistantPhoto';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
+import { stepButtonClasses } from "@mui/material";
 
-export const menuItems = [ {label:"1 Hour", value:"oneHour", step:23}, {label:"6 Hours", value:"sixHours", step:3}, 
-{label:"12 Hours", value:"twelvehours", step:1}, {label:"24 Hours", value:"oneDay", step:0}]
+export const menuItems = [ {label:"1 Hour", value: 1, step:23}, {label:"6 Hours", value: 6, step:3}, 
+{label:"12 Hours", value: 12, step:1}, {label:"24 Hours", value: 24, step:0}]
 
 export const filterMenuItems = [
    {primary: "HTTP Status", key: "http_status"},
@@ -23,9 +24,9 @@ export const filterMenuItems = [
 ]
 
 export const serviceMenuItems = [ 
-{primary: "Authorization", icon: <LockIcon/>, key: "auth"},
-{primary: "User", icon: <PersonIcon/>, key: "user"},
-{primary: "Carts", icon: <ShoppingCartIcon/>, key: "cart"},
+{primary: "Authorization", icon: <LockIcon/>, key: "authorization"},
+{primary: "Users", icon: <PersonIcon/>, key: "users"},
+{primary: "Cart", icon: <ShoppingCartIcon/>, key: "cart"},
 {primary: "Products", icon: <Inventory2Icon/>, key: "products"},
 {primary: "Suggestions", icon:<AssistantPhotoIcon/>, key: "suggestions"},
 {primary: "Billing", icon: <CreditCardIcon/>, key: "billing"},
@@ -41,6 +42,7 @@ export const Home = () => {
     const [pingData, setPingData] = useState(null);
     const [selectedTime, setSelectedTime] = useState(defValue);
     const [steps, setSteps] = useState(null);
+    const [selectedStep, setSelectedStep] = useState();
     const [selectedCheckValue, setSelectedCheckValue] = useState();
 
     useEffect(() => {
@@ -49,14 +51,6 @@ export const Home = () => {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
-            });
-
-
-            await axios.get('/metrics/querydb').then(res => {
-                console.log(res)
-                const pingData = res.data;
-                setPingData(pingData)
-                return pingData;
             });
 
             setAccount(data);
@@ -75,11 +69,12 @@ export const Home = () => {
     if (isLoading) {
         return <div>Loading...</div>;
     }
-        
+    
+
     return (<>Welcome to the app {account.account_name} and these are our services: {newData} 
-                    <Graph services={selectedCheckValue}/>
+                    <Graph services={selectedCheckValue} time={selectedTime} steps={steps} steps={selectedStep}/>
                     <br></br>
-                    <TimeSlider steps={steps} time={selectedTime}/>
+                    <TimeSlider steps={steps} time={selectedTime} onValueChange={(value) => setSelectedStep(value)}/>
                     <br></br>
                     <SimpleSelect onValueChange={(value) => setSelectedTime(value)} menuItems={menuItems} title="Time"/>
                 <br></br>

@@ -95,7 +95,6 @@ export function SelectServices(props) {
          setOtherChildChecked(true)      
       }
     }    
-    console.log(args)
     props.onServicesChange([args, ticked])
   }, [checked, ticked])
 
