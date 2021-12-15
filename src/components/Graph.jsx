@@ -11,7 +11,7 @@ const ChartTypes = Object.freeze({
     Unknown: "unknown",
     Bar: "bar",
     Line: "line",
-});
+}); 
 
 
 function Graph(props) {
@@ -43,14 +43,15 @@ function Graph(props) {
     const [httpStatus499, setHttpStatus499] = useState();
     const [httpStatus500, setHttpStatus500] = useState();
     const [httpStatus502, setHttpStatus502] = useState();
+    const [graphTitle, setGraphTitle] = useState();
 
     // all use effects needed for the data as it is undefined on load
     useEffect(() => {
         if (metricsData && metricsData.length > 0) {
-            for (let i = 0; i < 61; i++) {
+            for (let i = 0; i < 60; i++) {
                 dataArray[i] = {
                     name: new Date(metricsData[i].ts_point).toLocaleString("en-GB",
-                        { hour: "numeric", minute: "numeric", second: "numeric" }),
+                        { hour: "numeric", minute: "numeric"}),
                     Latency: metricsData[i].avg_lat,
                     Percentile99th: metricsData[i].avg_per99,
                     MinLatency: metricsData[i].min_lat,
@@ -96,7 +97,7 @@ function Graph(props) {
 
     useEffect(() => {
         if (props.services && props.services.length > 0) {
-            console.log(props.services[0])
+            console.log(props.services[1])
 
 
             setSelectedInformation(props.services)
@@ -106,7 +107,7 @@ function Graph(props) {
                 console.log("AVERAGE LATENCY!")
                 setLatency("Latency")
             }
-            if (props.services[0].includes("max_lat")) {
+            if (props.services[0].includes("percent")) {
                 console.log("MAXIMUM LATENCY!")
                 setPercentile99th("Percentile99th")
             }
@@ -117,7 +118,7 @@ function Graph(props) {
             if (props.services[0].indexOf("minlat") === -1) {
                 setMinLatency("off")
             }
-            if (props.services[0].indexOf("maxlat") === -1) {
+            if (props.services[0].indexOf("percent") === -1) {
                 setPercentile99th("off")
             }
             if (props.services[0].indexOf("avglat") === -1) {
@@ -150,46 +151,102 @@ function Graph(props) {
                 setHttpStatus502("off")
             }
 
+            if (props.services[1].includes("auth")) {
+                
+                if (props.services[0].includes("http_status")) {
+                    setGraphTitle("Authorization - HTTP Status Codes")
+                }
+
+                else if (props.services[0].indexOf("avglat") && props.services[0].indexOf("percent") && props.services[0].indexOf("minlat")){
+                    setGraphTitle("Authorization")
+                }
+
+                else {setGraphTitle("Authorization - Latency")}
+                
+            }
+
+
+            if (props.services[1].includes("user")) {
+                
+                if (props.services[0].includes("http_status")) {
+                    setGraphTitle("User - HTTP Status Codes")
+                }
+
+                else if (props.services[0].indexOf("avglat") && props.services[0].indexOf("percent") && props.services[0].indexOf("minlat")){
+                    setGraphTitle("User")
+                }
+
+                else {setGraphTitle("User - Latency")}
+                
+            }
+
+
+            if (props.services[1].includes("cart")) {
+                
+                if (props.services[0].includes("http_status")) {
+                    setGraphTitle("Cart - HTTP Status Codes")
+                }
+
+                else if (props.services[0].indexOf("avglat") && props.services[0].indexOf("percent") && props.services[0].indexOf("minlat")){
+                    setGraphTitle("Cart")
+                }
+
+                else {setGraphTitle("Cart - Latency ")}
+                
+            }
+
+            if (props.services[1].includes("products")) {
+                
+                if (props.services[0].includes("http_status")) {
+                    setGraphTitle("Products - HTTP Status Codes")
+                }
+
+                else if (props.services[0].indexOf("avglat") && props.services[0].indexOf("percent") && props.services[0].indexOf("minlat")){
+                    setGraphTitle("Products")
+                }
+
+                else {setGraphTitle("Products - Latency")}
+                
+            }
+
+            if (props.services[1].includes("suggestions")) {
+                
+                if (props.services[0].includes("http_status")) {
+                    setGraphTitle("Suggestions - HTTP Status Codes")
+                }
+
+                else if (props.services[0].indexOf("avglat") && props.services[0].indexOf("percent") && props.services[0].indexOf("minlat")){
+                    setGraphTitle("Suggestions")
+                }
+
+                else {setGraphTitle("Suggestions - Latency")}
+                
+            }
+
+            if (props.services[1].includes("billing")) {
+                
+                if (props.services[0].includes("http_status")) {
+                    setGraphTitle("Billing - HTTP Status Codes")
+                }
+
+                else if (props.services[0].indexOf("avglat") && props.services[0].indexOf("percent") && props.services[0].indexOf("minlat")){
+                    setGraphTitle("Billing")
+                }
+
+                else {setGraphTitle("Billing - Latency")}
+                
+            }
+
         }
 
 
     }, [props.services])
 
 
-
-
-
-    // const header = "users";
-
-
-    // const [metrics, setMetrics] = useState(dataArray);
-    const [graphTitle, setGraphTitle] = useState();
-    //set initial dataset values
-
-
     return (
 
         <div>
-            <Button variant="contained"
-                onClick={() => {
-                    setMoreData(
-                        otherData);
-                    { setGraphTitle(metricsData[100].service_type + " - Latency Information") }
-                }} > Change Data
-            </Button>
-
-            <Button variant="contained"
-                onClick={() => {
-                    setMinLatency(
-                        "MinLatency");
-                }} > Show Min Latency
-            </Button>
-
-            <Button id="bar" variant="contained"
-                onClick={() => { setDisplayedChartType(ChartTypes.Bar) }} > Make a bar graph
-            </Button>
-
-            <Typography ml={6.5} variant="h4" component="h2">
+            <Typography ml={13.5} variant="h4" component="h2">
                 {graphTitle}
             </Typography>
 
@@ -199,11 +256,11 @@ function Graph(props) {
                     width={1200}
                     height={400}
                     data={moreData}
-                    margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                    margin={{ top: 10, right: 30, left: 50, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" />
                       
                     <XAxis dataKey={dataKey} />
-                    <YAxis type="number" domain={[0, dataMax => (dataMax * 2)]} />
+                    <YAxis type="number"domain={[0, dataMax => (dataMax * 1.5)]} />
                       
                     <Tooltip />
                     <Line
