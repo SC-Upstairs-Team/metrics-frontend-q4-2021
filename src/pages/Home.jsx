@@ -53,13 +53,6 @@ export const Home = () => {
                 }
             });
 
-
-            await axios.get('/metrics/querydb').then(res => {
-                const pingData = res.data;
-                setPingData(pingData)
-                return pingData;
-            });
-
             setAccount(data);
             setIsLoading(false);
         });

@@ -18,13 +18,6 @@ function Graph(props) {
 
     const [metricsData, setMetricsData] = useState(null);
     const [displayedChartType, setDisplayedChartType] = useState(ChartTypes.Unknown);
-  
-    useEffect(() => {
-        axios.get('/metrics/querydb').then(res => {
-            const metricsData = res.data;
-            setMetricsData(metricsData)
-        });
-    }, []);
 
     const dataArray = [];
     const updatedDataArray = [];
@@ -80,31 +73,23 @@ function Graph(props) {
 
     useEffect(() => {
         if (props.services && props.services.length > 0) {
-<<<<<<< HEAD
         
-=======
-            console.log(props.services[1])
-
-
->>>>>>> 732e71b90c01dfe02b201a256fbd601251b550e8
             setSelectedInformation(props.services)
             setTime(props.time)
             setSelectedStep(props.steps)
-            console.log(props.steps)
-            console.log(props.time)
-            console.log(props.services[1])
             
+            const tsStart = 0;
+            const tsEnd = 3600000 * 24; 
 
+            axios.get(`/metrics/querydb?tsStart=${tsStart}&tsEnd=${tsEnd}&service=${props.services[1]}&sliderValue=${props.steps}&timeFrame=${props.time}`).then(res => {
+                    const metricsData = res.data;
+                setMetricsData(metricsData)
+            });
 
             if (props.services[0].includes("avglat")) {
                 setLatency("Latency")
             }
-<<<<<<< HEAD
             if (props.services[0].includes("max_lat")) {
-=======
-            if (props.services[0].includes("percent")) {
-                console.log("MAXIMUM LATENCY!")
->>>>>>> 732e71b90c01dfe02b201a256fbd601251b550e8
                 setPercentile99th("Percentile99th")
             }
             if (props.services[0].includes("minlat")) {
@@ -121,7 +106,6 @@ function Graph(props) {
             }
 
             if (props.services[0].includes("http_status")) {
-                console.log("status")
 
 
                 setHttpStatus400("HttpStatus400")
@@ -146,7 +130,6 @@ function Graph(props) {
                 setHttpStatus502("off")
             }
 
-<<<<<<< HEAD
             if (props.services[1].includes("auth")) {
                 
                 if (props.services[0].includes("http_status")) {
@@ -234,20 +217,8 @@ function Graph(props) {
             }
 
         }
-<<<<<<< HEAD
     }, [props.services, props.time, props.steps])
-=======
 
-
-    }, [props.services])
->>>>>>> 732e71b90c01dfe02b201a256fbd601251b550e8
-
-
-=======
-        }
-    }, [props.services])
-
->>>>>>> 9916901b94d3151980d277a93b95690a0eef3be1
     return (
 
         <div>
