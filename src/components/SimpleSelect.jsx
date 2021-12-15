@@ -17,7 +17,7 @@ export function SimpleSelect(props) {
   }
 
   return (
-    <Box sx={{ width: 135, paddingLeft: 100 }}>
+    <Box sx={{ width: 135, paddingLeft: 2 }}>
       <FormControl fullWidth>
         <InputLabel id="time-id">{props.title}</InputLabel>
         <Select

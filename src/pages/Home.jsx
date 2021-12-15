@@ -11,6 +11,9 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import AssistantPhotoIcon from '@mui/icons-material/AssistantPhoto';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
+import { Typography } from "@mui/material";
+import { StylesProvider } from "@material-ui/styles";
+import styles from '../components/Home.module.css'
 
 export const menuItems = [ {label:"1 Hour", value:"oneHour", step:23}, {label:"6 Hours", value:"sixHours", step:3}, 
 {label:"12 Hours", value:"twelvehours", step:1}, {label:"24 Hours", value:"oneDay", step:0}]
@@ -76,13 +79,20 @@ export const Home = () => {
         return <div>Loading...</div>;
     }
         
-    return (<>Welcome to the app {account.account_name} and these are our services: {newData} 
-                    <Graph services={selectedCheckValue}/>
-                    <br></br>
-                    <TimeSlider steps={steps} time={selectedTime}/>
-                    <br></br>
-                    <SimpleSelect onValueChange={(value) => setSelectedTime(value)} menuItems={menuItems} title="Time"/>
-                <br></br>
-                <SelectServices onServicesChange={setSelectedCheckValue} serviceMenuItems={serviceMenuItems} filterMenuItems={filterMenuItems}/>
+    return (<> <Typography variant="h6" component="h2">Welcome to the app {account.account_name}, view metrics data below: {newData} </Typography>
+
+                    <div className = {styles.GraphInLine}>
+                        <div className={styles.GraphAndSelection}>
+                            <SelectServices onServicesChange={setSelectedCheckValue} serviceMenuItems={serviceMenuItems} filterMenuItems={filterMenuItems}/>
+                            <Graph services={selectedCheckValue}/>
+                        </div>
+                        <div className = {styles.TimeSlider}>
+                        <TimeSlider steps={steps} time={selectedTime}/>
+                        <SimpleSelect onValueChange={(value) => setSelectedTime(value)} menuItems={menuItems} title="Time"/>
+                        </div>
+
+                        </div>
+                 
+                
     </>);
 }
