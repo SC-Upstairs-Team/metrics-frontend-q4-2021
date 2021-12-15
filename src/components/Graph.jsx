@@ -72,29 +72,6 @@ function Graph(props) {
         }
     }, [metricsData])
 
-
-
-    // useEffect(() => {
-    //     if (metricsData && metricsData.length > 0){
-    //         for (let i = 0; i < 10; i ++){
-
-    //             updatedDataArray[i] = {
-    //                 name: new Date(metricsData[i].ts ).toLocaleString("en-GB", 
-    //                 {hour: "numeric", minute: "numeric", second: "numeric"}), 
-    //                 Latency: metricsData[i].avg_lat,
-    //                  MaxLatency: metricsData[i].avg_max, 
-    //                  MinLatency: metricsData[i].avg_min,
-    //                 ServiceType: metricsData[i].service_type}
-    //         } setOtherData(updatedDataArray)
-
-
-
-
-    //     }
-    // },[metricsData])
-
-
-
     useEffect(() => {
         if (props.services && props.services.length > 0) {
             console.log(props.services[1])
@@ -151,6 +128,7 @@ function Graph(props) {
                 setHttpStatus502("off")
             }
 
+<<<<<<< HEAD
             if (props.services[1].includes("auth")) {
                 
                 if (props.services[0].includes("http_status")) {
@@ -243,6 +221,11 @@ function Graph(props) {
     }, [props.services])
 
 
+=======
+        }
+    }, [props.services])
+
+>>>>>>> 9916901b94d3151980d277a93b95690a0eef3be1
     return (
 
         <div>
@@ -351,23 +334,8 @@ function Graph(props) {
                 </BarChart>
 
             )}
-
-            {/* {displayedChartType === ChartTypes.Unknown && (
-            <div>
-                <button onClick={() => setDisplayedChartType(ChartTypes.Bar)}>Bar</button>
-                <button onClick={() => setDisplayedChartType(ChartTypes.Line)}>Line</button>
-            </div>
-        )} */}
-
-
-
         </div>
-
-
     )
-
 }
-
-
 
 export default Graph
