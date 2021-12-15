@@ -11,6 +11,9 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import AssistantPhotoIcon from '@mui/icons-material/AssistantPhoto';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
+import { Typography } from "@mui/material";
+import { StylesProvider } from "@material-ui/styles";
+import styles from '../components/Home.module.css'
 import { stepButtonClasses } from "@mui/material";
 
 export const menuItems = [ {label:"1 Hour", value: 1, step:23}, {label:"6 Hours", value: 6, step:3}, 
@@ -69,15 +72,20 @@ export const Home = () => {
     if (isLoading) {
         return <div>Loading...</div>;
     }
-    
+        
+    return (<> <Typography variant="h6" component="h2">Welcome to the app {account.account_name}, view metrics data below: {newData} </Typography>
 
-    return (<>Welcome to the app {account.account_name} and these are our services: {newData} 
-                    <Graph services={selectedCheckValue} time={selectedTime} steps={steps} steps={selectedStep}/>
-                    <br></br>
-                    <TimeSlider steps={steps} time={selectedTime} onValueChange={(value) => setSelectedStep(value)}/>
-                    <br></br>
-                    <SimpleSelect onValueChange={(value) => setSelectedTime(value)} menuItems={menuItems} title="Time"/>
-                <br></br>
-                <SelectServices onServicesChange={setSelectedCheckValue} serviceMenuItems={serviceMenuItems} filterMenuItems={filterMenuItems}/>
+                    <div className = {styles.GraphInLine}>
+                        <div className={styles.GraphAndSelection}>
+                            <SelectServices onServicesChange={setSelectedCheckValue} serviceMenuItems={serviceMenuItems} filterMenuItems={filterMenuItems}/>
+                            <Graph services={selectedCheckValue}/>
+                        </div>
+                        <div className = {styles.TimeSlider}>
+                        <TimeSlider steps={steps} time={selectedTime}/>
+                        <SimpleSelect onValueChange={(value) => setSelectedTime(value)} menuItems={menuItems} title="Time"/>
+                        </div>
+
+                        </div>
+                 
     </>);
 }

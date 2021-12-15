@@ -23,7 +23,7 @@ export function TimeSlider(props) {
     }, [value])
 
     return(
-      <Box sx={{ width: 1000, paddingLeft: 13  }}>
+      <Box sx={{ width: 1000}}>
       <Slider
         step={1}
         marks

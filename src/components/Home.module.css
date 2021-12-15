@@ -1,0 +1,32 @@
+.GraphInLine{
+    display: flex;
+    flex-direction: column;
+    padding-top: 30px;
+}
+
+.GraphAndSelection{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.TimeSlider{
+    display: flex;
+    padding: 0 0 0 30%;
+    justify-content: center;
+    align-items: center;
+}
+
+.TimeSelector{
+    display: flex;
+}
+
+.column{
+    display: flex;
+}
+
+.Title{
+    display: flex;
+    align-items: center;
+}

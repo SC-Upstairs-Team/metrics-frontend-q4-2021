@@ -3,8 +3,9 @@ import axios from 'axios';
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Title, BarChart, Bar, Legend
 } from 'recharts';
+import styles from '../components/Graph.module.css'
 
-import { Typography, Button } from "@mui/material";
+import { Typography} from "@mui/material";
 
 
 const ChartTypes = Object.freeze({
@@ -219,21 +220,26 @@ function Graph(props) {
         }
     }, [props.services, props.time, props.steps])
 
+
+    }, [props.services])
+    
     return (
 
         <div>
 
+            <div className = {styles.Title}>
             <Typography ml={13.5} variant="h4" component="h2">
                 {graphTitle}
             </Typography>
+            </div>
 
             {[ChartTypes.Line, ChartTypes.Unknown].indexOf(displayedChartType) !== -1 && (
               
                 <LineChart
                     width={1200}
-                    height={400}
+                    height={600}
                     data={moreData}
-                    margin={{ top: 10, right: 30, left: 50, bottom: 0 }}>
+                    margin={{ top: 10, right: 30, left: 30, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" />
                       
                     <XAxis dataKey={dataKey} />
