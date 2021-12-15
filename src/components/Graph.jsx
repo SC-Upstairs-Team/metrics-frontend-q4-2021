@@ -19,13 +19,6 @@ function Graph(props) {
 
     const [metricsData, setMetricsData] = useState(null);
     const [displayedChartType, setDisplayedChartType] = useState(ChartTypes.Unknown);
-  
-    useEffect(() => {
-        axios.get('/metrics/querydb').then(res => {
-            const metricsData = res.data;
-            setMetricsData(metricsData)
-        });
-    }, []);
 
     const dataArray = [];
     const updatedDataArray = [];
@@ -45,6 +38,11 @@ function Graph(props) {
     const [httpStatus500, setHttpStatus500] = useState();
     const [httpStatus502, setHttpStatus502] = useState();
     const [graphTitle, setGraphTitle] = useState();
+
+    const [time, setTime] = useState(props.time);
+    const [steps, setSteps] = useState(props.steps);
+    const [selectedStep, setSelectedStep] = useState(props.steps)
+
 
     // all use effects needed for the data as it is undefined on load
     useEffect(() => {
@@ -68,6 +66,7 @@ function Graph(props) {
                 }
 
             }
+            
             setMoreData(dataArray)
 
         }
@@ -75,22 +74,26 @@ function Graph(props) {
 
     useEffect(() => {
         if (props.services && props.services.length > 0) {
-            console.log(props.services[1])
-
-
+        
             setSelectedInformation(props.services)
+            setTime(props.time)
+            setSelectedStep(props.steps)
+            
+            const tsStart = 0;
+            const tsEnd = 3600000 * 24; 
 
+            axios.get(`/metrics/querydb?tsStart=${tsStart}&tsEnd=${tsEnd}&service=${props.services[1]}&sliderValue=${props.steps}&timeFrame=${props.time}`).then(res => {
+                    const metricsData = res.data;
+                setMetricsData(metricsData)
+            });
 
             if (props.services[0].includes("avglat")) {
-                console.log("AVERAGE LATENCY!")
                 setLatency("Latency")
             }
-            if (props.services[0].includes("percent")) {
-                console.log("MAXIMUM LATENCY!")
+            if (props.services[0].includes("max_lat")) {
                 setPercentile99th("Percentile99th")
             }
             if (props.services[0].includes("minlat")) {
-                console.log("MIN LATENCY")
                 setMinLatency("MinLatency")
             }
             if (props.services[0].indexOf("minlat") === -1) {
@@ -104,7 +107,6 @@ function Graph(props) {
             }
 
             if (props.services[0].includes("http_status")) {
-                console.log("status")
 
 
                 setHttpStatus400("HttpStatus400")
@@ -216,11 +218,11 @@ function Graph(props) {
             }
 
         }
+    }, [props.services, props.time, props.steps])
 
 
     }, [props.services])
-
-
+    
     return (
 
         <div>
@@ -231,7 +233,7 @@ function Graph(props) {
             </Typography>
             </div>
 
-            {[ChartTypes.Line, ChartTypes.Unknown].indexOf(displayedChartType) != -1 && (
+            {[ChartTypes.Line, ChartTypes.Unknown].indexOf(displayedChartType) !== -1 && (
               
                 <LineChart
                     width={1200}

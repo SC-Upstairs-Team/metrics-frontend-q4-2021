@@ -14,21 +14,22 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import { Typography } from "@mui/material";
 import { StylesProvider } from "@material-ui/styles";
 import styles from '../components/Home.module.css'
+import { stepButtonClasses } from "@mui/material";
 
-export const menuItems = [ {label:"1 Hour", value:"oneHour", step:23}, {label:"6 Hours", value:"sixHours", step:3}, 
-{label:"12 Hours", value:"twelvehours", step:1}, {label:"24 Hours", value:"oneDay", step:0}]
+export const menuItems = [ {label:"1 Hour", value: 1, step:23}, {label:"6 Hours", value: 6, step:3}, 
+{label:"12 Hours", value: 12, step:1}, {label:"24 Hours", value: 24, step:0}]
 
 export const filterMenuItems = [
    {primary: "HTTP Status", key: "http_status"},
    {primary: "Average Latency", key: "avglat"},
    {primary: "Minimum Latency", key: "minlat"},
-   {primary: "99th Percentile", key: "percent"},
+   {primary: "99th Percentile", key: "percent"}
 ]
 
 export const serviceMenuItems = [ 
-{primary: "Authorization", icon: <LockIcon/>, key: "auth"},
-{primary: "User", icon: <PersonIcon/>, key: "user"},
-{primary: "Carts", icon: <ShoppingCartIcon/>, key: "cart"},
+{primary: "Authorization", icon: <LockIcon/>, key: "authorization"},
+{primary: "Users", icon: <PersonIcon/>, key: "users"},
+{primary: "Cart", icon: <ShoppingCartIcon/>, key: "cart"},
 {primary: "Products", icon: <Inventory2Icon/>, key: "products"},
 {primary: "Suggestions", icon:<AssistantPhotoIcon/>, key: "suggestions"},
 {primary: "Billing", icon: <CreditCardIcon/>, key: "billing"},
@@ -44,6 +45,7 @@ export const Home = () => {
     const [pingData, setPingData] = useState(null);
     const [selectedTime, setSelectedTime] = useState(defValue);
     const [steps, setSteps] = useState(null);
+    const [selectedStep, setSelectedStep] = useState();
     const [selectedCheckValue, setSelectedCheckValue] = useState();
 
     useEffect(() => {
@@ -52,14 +54,6 @@ export const Home = () => {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
-            });
-
-
-            await axios.get('/metrics/querydb').then(res => {
-                console.log(res)
-                const pingData = res.data;
-                setPingData(pingData)
-                return pingData;
             });
 
             setAccount(data);
@@ -93,6 +87,5 @@ export const Home = () => {
 
                         </div>
                  
-                
     </>);
 }
