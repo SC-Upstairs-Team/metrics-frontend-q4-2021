@@ -20,7 +20,7 @@ export const filterMenuItems = [
    {primary: "HTTP Status", key: "http_status"},
    {primary: "Average Latency", key: "avglat"},
    {primary: "Minimum Latency", key: "minlat"},
-   {primary: "99th Percentile", key: "percent"},
+   {primary: "99th Percentile", key: "percent"}
 ]
 
 export const serviceMenuItems = [ 

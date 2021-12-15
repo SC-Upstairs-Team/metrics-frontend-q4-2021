@@ -22,7 +22,7 @@ export function SelectServices(props) {
   const [open, setOpen] = React.useState({});
   const [checked, setChecked] = React.useState(checkedInitialState);
   const [ticked, setTicked] = React.useState(serviceMenuItems[0].key);
-  const [selectedParentKey, setSelectedParentKey] = React.useState("auth");
+  const [selectedParentKey, setSelectedParentKey] = React.useState("authorization");
   const [httpStatusChecked, setHttpStatusChecked] = React.useState(false);
   const [otherChildChecked, setOtherChildChecked] = React.useState(false);
 
@@ -37,34 +37,37 @@ export function SelectServices(props) {
   }
 
 
-
+  
   const handleClick = (key) => {
+    if(key !== selectedParentKey) {
+      setOpen(false);
+      return
+    } 
     setOpen({...open, [key]: open[key]? !open[key] : true});
   };
+  
 
   const selectCheckbox = (parent, child) => {
-    var key = child+parent
-
+    const key = child+parent
     setChecked({...checked, [key]: !checked[key]});
   };
+
   
   const isDisabled = (parent, child) => {
+    if(selectedParentKey !== undefined) {
+    }
+    if(selectedParentKey !== parent) {
+      return true;
+    } 
+
     if(child === "http_status") {
       if(otherChildChecked) {
         return true;
-      } else if (selectedParentKey !== undefined && selectedParentKey !== parent) {
-       return true;
-      } else {
-        return false;
-      }
+      } return false;
     } else {
       if(httpStatusChecked) {
         return true;
-      } else if (selectedParentKey !== undefined && selectedParentKey !== parent) {
-       return true;
-      } else {
-        return false;
-      }
+      } return false;
     }
   }
 
