@@ -38,6 +38,7 @@ function Graph(props) {
     const [httpStatus500, setHttpStatus500] = useState();
     const [httpStatus502, setHttpStatus502] = useState();
     const [graphTitle, setGraphTitle] = useState();
+    const [date, setDate] = useState();
 
     const [time, setTime] = useState(props.time);
     const [steps, setSteps] = useState(props.steps);
@@ -64,6 +65,9 @@ function Graph(props) {
                     HttpStatus502: metricsData.filter(e => metricsData[i].status_502 !== '0').length > 0 ? metricsData[i].status_502 : undefined,
                     ServiceType: metricsData[i].service_type
                 }
+                setDate(new Date(metricsData[0].ts_point).toLocaleString("en-GB",
+                { day: "numeric", month: "numeric", year: "numeric"}))
+
 
             }
             
@@ -146,14 +150,14 @@ function Graph(props) {
             if (props.services[1].includes("user")) {
                 
                 if (props.services[0].includes("http_status")) {
-                    setGraphTitle("User - HTTP Status Codes")
+                    setGraphTitle("Users - HTTP Status Codes")
                 }
 
                 else if (props.services[0].indexOf("avglat") && props.services[0].indexOf("percent") && props.services[0].indexOf("minlat")){
-                    setGraphTitle("User")
+                    setGraphTitle("Users")
                 }
 
-                else {setGraphTitle("User - Latency")}
+                else {setGraphTitle("Users - Latency")}
                 
             }
 
@@ -222,11 +226,17 @@ function Graph(props) {
     return (
 
         <div>
-
-            <div className = {styles.Title}>
-            <Typography ml={13.5} variant="h4" component="h2">
-                {graphTitle}
-            </Typography>
+            <div className = {styles.TitleBox}>
+                <div className = {styles.Title}>
+                    <Typography  variant="h4" component="h2">
+                            {graphTitle}
+                    </Typography>
+                </div>
+                <Typography>
+                <div className = {styles.Subtitle}>  
+                    Date beginning from: {date}
+                </div>
+                </Typography>
             </div>
 
             {[ChartTypes.Line, ChartTypes.Unknown].indexOf(displayedChartType) !== -1 && (
