@@ -21,6 +21,7 @@
     "chart.js": "^2.9.4",
     "date-fns": "^2.27.0",
     "fontsource-roboto": "^4.0.0",
+    "global": "^4.4.0",
     "react": "^16.14.0",
     "react-c3js": "^0.1.20",
     "react-chartjs-2": "^2.11.2",

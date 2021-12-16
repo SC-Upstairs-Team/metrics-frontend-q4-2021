@@ -78,10 +78,10 @@ export const Home = () => {
                     <div className = {styles.GraphInLine}>
                         <div className={styles.GraphAndSelection}>
                             <SelectServices onServicesChange={setSelectedCheckValue} serviceMenuItems={serviceMenuItems} filterMenuItems={filterMenuItems}/>
-                            <Graph services={selectedCheckValue}/>
+                            <Graph services={selectedCheckValue} time={selectedTime} steps={steps} steps={selectedStep}/>
                         </div>
                         <div className = {styles.TimeSlider}>
-                        <TimeSlider steps={steps} time={selectedTime}/>
+                        <TimeSlider steps={steps} time={selectedTime} onValueChange={(value) => setSelectedStep(value)}/>
                         <SimpleSelect onValueChange={(value) => setSelectedTime(value)} menuItems={menuItems} title="Time"/>
                         </div>
 
