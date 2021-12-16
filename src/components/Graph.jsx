@@ -221,7 +221,6 @@ function Graph(props) {
     }, [props.services, props.time, props.steps])
 
 
-    }, [props.services])
     
     return (
 
