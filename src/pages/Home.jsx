@@ -56,6 +56,13 @@ export const Home = () => {
                 }
             });
 
+            await axios.get('/metrics/getdata').then(res => {
+                console.log(res)
+                const pingData = res.data;
+                setPingData(pingData)
+                return pingData;
+            });
+
             setAccount(data);
             setIsLoading(false);
         });
@@ -82,7 +89,7 @@ export const Home = () => {
                         </div>
                         <div className = {styles.TimeSlider}>
                         <TimeSlider steps={steps} time={selectedTime} onValueChange={(value) => setSelectedStep(value)}/>
-                        <SimpleSelect onValueChange={(value) => setSelectedTime(value)} menuItems={menuItems} title="Time"/>
+                        <SimpleSelect onValueChange={(value) => setSelectedTime(value)} menuItems={menuItems} title="Time Frame"/>
                         </div>
 
                         </div>

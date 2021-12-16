@@ -50,7 +50,7 @@ function Graph(props) {
         if (metricsData && metricsData.length > 0) {
             for (let i = 0; i < 60; i++) {
                 dataArray[i] = {
-                    name: new Date(metricsData[i].ts_point).toLocaleString("en-GB",
+                    name: new Date(metricsData[i].ts_point * 1000).toLocaleString("en-GB",
                         { hour: "numeric", minute: "numeric"}),
                     Latency: metricsData[i].avg_lat,
                     Percentile99th: metricsData[i].avg_per99,
@@ -82,11 +82,8 @@ function Graph(props) {
             setSelectedInformation(props.services)
             setTime(props.time)
             setSelectedStep(props.steps)
-            
-            const tsStart = 0;
-            const tsEnd = 3600000 * 24; 
 
-            axios.get(`/metrics/querydb?tsStart=${tsStart}&tsEnd=${tsEnd}&service=${props.services[1]}&sliderValue=${props.steps}&timeFrame=${props.time}`).then(res => {
+            axios.get(`/metrics/querydb?service=${props.services[1]}&sliderValue=${props.steps}&timeFrame=${props.time}`).then(res => {
                     const metricsData = res.data;
                 setMetricsData(metricsData)
             });

@@ -22,7 +22,7 @@ export function SimpleSelect(props) {
         <InputLabel id="time-id">{props.title}</InputLabel>
         <Select
           value={value}
-          label="Time"
+          label="Time Frame"
           onChange={(e)=> handleOnChange(e)}
         >
           {props.menuItems.map(item => {
