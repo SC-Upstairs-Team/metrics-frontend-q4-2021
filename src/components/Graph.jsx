@@ -90,7 +90,7 @@ function Graph(props) {
             if (props.services[0].includes("avglat")) {
                 setLatency("Latency")
             }
-            if (props.services[0].includes("max_lat")) {
+            if (props.services[0].includes("percent")) {
                 setPercentile99th("Percentile99th")
             }
             if (props.services[0].includes("minlat")) {
